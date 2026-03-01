@@ -203,13 +203,14 @@ public class Proxy {
                     connected = true;
                 }
             }
-            if (LAUNCH_CONFIG.auto_update && !inDevEnv()) {
-                autoUpdater = LAUNCH_CONFIG.release_channel.equals("git")
-                    ? NoOpAutoUpdater.INSTANCE
-                    : new RestAutoUpdater();
-                autoUpdater.start();
-                DEFAULT_LOG.info("Started AutoUpdater");
-            }
+            // auto-update disabled in this fork
+            // if (LAUNCH_CONFIG.auto_update && !inDevEnv()) {
+            //     autoUpdater = LAUNCH_CONFIG.release_channel.equals("git")
+            //         ? NoOpAutoUpdater.INSTANCE
+            //         : new RestAutoUpdater();
+            //     autoUpdater.start();
+            //     DEFAULT_LOG.info("Started AutoUpdater");
+            // }
             DEFAULT_LOG.info("ZenithProxy started!");
             if (LAUNCH_CONFIG.release_channel.endsWith(".pre")) {
                 DISCORD.sendEmbedMessage(

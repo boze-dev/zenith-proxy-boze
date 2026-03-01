@@ -105,25 +105,8 @@ def git_read_version(config: LaunchConfig):
 
 
 def update_zenith_exec(config, api):
-    try:
-        if config.auto_update:
-            info("Checking for ZenithProxy update...")
-            if config.release_channel == "git":
-                git_update_check()
-            elif config.release_channel.startswith("java"):
-                java_update_check(config, api)
-            elif config.release_channel.startswith("linux"):
-                linux_native_update_check(config, api)
-        elif config.release_channel != "git" and config.version != config.local_version:
-            info(f"Desired version is different from local version, attempting to download version: {config.version}")
-            if config.release_channel.startswith("java"):
-                java_get_version(config, api, config.version)
-            elif config.release_channel.startswith("linux"):
-                linux_native_get_version(config, api, config.version)
-        else:
-            info("Did not check for update, AutoUpdate is disabled")
-        if config.release_channel == "git":
-            git_read_version(config)
-        config.write_launch_config()
-    except:
-        exception("Error checking for ZenithProxy update")
+    # auto-update disabled in this fork - no external update checks
+    info("AutoUpdate is disabled in this fork")
+    if config.release_channel == "git":
+        git_read_version(config)
+    config.write_launch_config()
