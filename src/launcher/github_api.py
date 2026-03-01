@@ -15,10 +15,8 @@ class GitHubAPI:
         self.launch_config = launch_config
 
     def _get_base_url(self):
-        if self.launch_config.repo_owner == "rfresh2" and self.launch_config.repo_name == "ZenithProxy":
-            host = "github.2b2t.vc"
-        else:
-            host = "api.github.com"
+        # github.2b2t.vc mirror removed in this fork
+        host = "api.github.com"
         return f"https://{host}/repos/{self.launch_config.repo_owner}/{self.launch_config.repo_name}/releases"
 
     def _get_headers(self):

@@ -17,8 +17,8 @@ print("WARNING: This launcher version is deprecated and may no longer work in th
 print("Please update to Launcher V3: https://github.com/rfresh2/ZenithProxy/releases/tags/launcher-v3")
 print("################################################")
 
-auto_update = True
-auto_update_launcher = True
+auto_update = False  # disabled - no auto-update in this fork
+auto_update_launcher = False  # disabled - no auto-update in this fork
 release_channel = "java.1.20.1"
 version = "0.0.0"
 local_version = "0.0.0"
@@ -159,10 +159,8 @@ def valid_release_channel(channel):
 
 
 def get_github_api_base_url():
-    if repo_owner == "rfresh2" and repo_name == "ZenithProxy":
-        return "github.2b2t.vc"
-    else:
-        return "api.github.com"
+    # github.2b2t.vc mirror removed in this fork
+    return "api.github.com"
 
 
 def get_github_base_headers():

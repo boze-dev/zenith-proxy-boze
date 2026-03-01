@@ -19,9 +19,8 @@ public class RestAutoUpdater extends AutoUpdater {
     private final String baseUrl;
 
     public RestAutoUpdater() {
-        this.baseUrl = LAUNCH_CONFIG.repo_owner.equals("rfresh2") && LAUNCH_CONFIG.repo_name.equals("ZenithProxy")
-            ? "https://github.2b2t.vc"
-            : "https://api.github.com";
+        // auto-update disabled in this fork - no external connections
+        this.baseUrl = "https://api.github.com"; // unused, updater is disabled
         this.httpClient = HttpClient.newBuilder()
             .followRedirects(HttpClient.Redirect.ALWAYS)
             .connectTimeout(Duration.ofSeconds(2))
@@ -30,11 +29,9 @@ public class RestAutoUpdater extends AutoUpdater {
 
     @Override
     public void start() {
-        if (!validReleaseChannel(LAUNCH_CONFIG.release_channel)) {
-            DEFAULT_LOG.error("Invalid release channel: {}", LAUNCH_CONFIG.release_channel);
-            return;
-        }
-        super.start();
+        // auto-update disabled in this fork
+        DEFAULT_LOG.info("AutoUpdater is disabled in this fork");
+        return;
     }
 
     public boolean validReleaseChannel(final String in) {

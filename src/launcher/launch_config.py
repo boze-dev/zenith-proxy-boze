@@ -30,8 +30,8 @@ def read_launch_config_file() -> Optional[dict]:
 class LaunchConfig:
 
     def __init__(self):
-        self.auto_update = True
-        self.auto_update_launcher = True
+        self.auto_update = False  # disabled - no auto-update in this fork
+        self.auto_update_launcher = False  # disabled - no auto-update in this fork
         self.release_channel = "java.1.21.4"
         self.version = "0.0.0"
         self.local_version = "0.0.0"
