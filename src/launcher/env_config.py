@@ -10,6 +10,14 @@ def apply():
     info("Applying environment variables to config.json...")
     config = read_config()
 
+    # A brand-new / never-configured account can have its stored config
+    # serialized as a JSON array ("[]") rather than an object ("{}"). Applying
+    # env vars walks the config with dict.setdefault(), which does not exist on
+    # a list, so guard against a non-dict config here instead of crashing.
+    if not isinstance(config, dict):
+        error("config.json is not a JSON object, treating as empty")
+        config = {}
+
     valid_env_entries = []
     for env_entry in os.environ.items():
         if env_entry[0].startswith(env_prefix):
