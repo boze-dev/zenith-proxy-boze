@@ -240,6 +240,10 @@ public final class MovementHelper {
             || block == BlockRegistry.COBWEB
             || block == BlockRegistry.VINE
             || block == BlockRegistry.LADDER
+            || block == BlockRegistry.TWISTING_VINES
+            || block == BlockRegistry.TWISTING_VINES_PLANT
+            || block == BlockRegistry.WEEPING_VINES
+            || block == BlockRegistry.WEEPING_VINES_PLANT
             || block == BlockRegistry.COCOA
             || block == BlockRegistry.AZALEA || block == BlockRegistry.FLOWERING_AZALEA
             || block.blockTags().contains(BlockTags.DOORS)
@@ -304,7 +308,7 @@ public final class MovementHelper {
             var layersProperty = World.getBlockStateProperty(blockStateId, BlockStateProperties.LAYERS);
             return layersProperty != null && layersProperty == 1;
         }
-        if (block == BlockRegistry.LARGE_FERN || block == BlockRegistry.TALL_GRASS) {
+        if (block == BlockRegistry.LARGE_FERN || block == BlockRegistry.TALL_GRASS || block == BlockRegistry.SCULK_VEIN) {
             return true;
         }
         return block.replaceable();
@@ -392,7 +396,13 @@ public final class MovementHelper {
         if (block == BlockRegistry.AZALEA || block == BlockRegistry.FLOWERING_AZALEA) {
             return YES;
         }
-        if (block == BlockRegistry.LADDER) { // TODO reconsider this
+        if (block == BlockRegistry.LADDER
+            || block == BlockRegistry.VINE
+            || block == BlockRegistry.TWISTING_VINES
+            || block == BlockRegistry.TWISTING_VINES_PLANT
+            || block == BlockRegistry.WEEPING_VINES
+            || block == BlockRegistry.WEEPING_VINES_PLANT)
+        { // TODO reconsider this
             return YES;
         }
         if (block == BlockRegistry.FARMLAND || block == BlockRegistry.DIRT_PATH || block == BlockRegistry.SOUL_SAND) {
@@ -659,7 +669,7 @@ public final class MovementHelper {
         Rotation targetRotation = state.getTarget().rotation();
         MutableVec3d playerVelocity = ctx.player().getVelocity();
         double velThreshold = 0.02;
-        if (Math.abs(playerVelocity.getX()) > velThreshold || Math.abs(playerVelocity.getZ()) > velThreshold) {
+        if (!BOT.isHorizontalCollision() && (Math.abs(playerVelocity.getX()) > velThreshold || Math.abs(playerVelocity.getZ()) > velThreshold)) {
             double velX = MathHelper.round(playerVelocity.getX(), 3);
             double velZ = MathHelper.round(playerVelocity.getZ(), 3);
             // we really only care about the x and z components of the velocity
@@ -763,6 +773,18 @@ public final class MovementHelper {
 
     public static boolean isLiquid(Block block) {
         return World.isFluid(block);
+    }
+
+    public static boolean isPlayerTouchingWater() {
+        return PlayerContext.INSTANCE.player().isTouchingWater() || MovementHelper.isWater(World.getBlock(PlayerContext.INSTANCE.playerFeet()));
+    }
+
+    public static boolean isPlayerTouchingLava() {
+        return PlayerContext.INSTANCE.player().isTouchingLava() || MovementHelper.isLava(World.getBlock(PlayerContext.INSTANCE.playerFeet()));
+    }
+
+    public static boolean isPlayerTouchingLiquid() {
+        return isPlayerTouchingWater() || isPlayerTouchingLava();
     }
 
 //    static boolean possiblyFlowing(BlockState state) {

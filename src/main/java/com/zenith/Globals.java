@@ -29,6 +29,7 @@ import com.zenith.plugin.api.ConfigSerializer;
 import com.zenith.terminal.TerminalManager;
 import com.zenith.util.KotlinUtil;
 import com.zenith.util.Wait;
+import com.zenith.util.ZenithScheduledExecutor;
 import com.zenith.util.config.Config;
 import com.zenith.util.config.ConfigVerifier;
 import com.zenith.util.config.LaunchConfig;
@@ -89,9 +90,24 @@ public class Globals {
     public static final PluginManager PLUGIN_MANAGER;
     public static final InGameGuiManager GUI;
     public static final String MC_VERSION;
+    public static final String VERSION;
 
     public static boolean inDevEnv() {
         return System.getenv("ZENITH_DEV") != null;
+    }
+
+    public static String getVersion() {
+        var releaseVersion = getExecutableReleaseVersion();
+        if (releaseVersion != null) {
+            if (releaseVersion.endsWith("pre")) {
+                var commit = getExecutableCommit();
+                if (commit != null) {
+                    return releaseVersion + "-" + commit;
+                }
+            }
+            return releaseVersion;
+        }
+        return LAUNCH_CONFIG.version;
     }
 
     public static @Nullable String getExecutableCommit() {
@@ -195,7 +211,7 @@ public class Globals {
         try {
             Thread.setDefaultUncaughtExceptionHandler(
                 (thread, e) -> DEFAULT_LOG.error("Uncaught exception in thread {}", thread, e));
-            EXECUTOR = Executors.newScheduledThreadPool(4, new ThreadFactoryBuilder()
+            EXECUTOR = new ZenithScheduledExecutor(4, new ThreadFactoryBuilder()
                 .setNameFormat("ZenithProxy Scheduled Executor - #%d")
                 .setDaemon(true)
                 .setUncaughtExceptionHandler((thread, e) -> DEFAULT_LOG.error("Uncaught exception in scheduled executor thread {}", thread, e))
@@ -223,6 +239,7 @@ public class Globals {
             TranslationRegistryInitializer.registerAllTranslations();
             CONFIG = loadConfig();
             LAUNCH_CONFIG = loadLaunchConfig();
+            VERSION = getVersion();
             PLUGIN_MANAGER = new PluginManager();
             ConfigVerifier.verifyConfigs();
             PLAYER_LISTS.init(); // must be init after config

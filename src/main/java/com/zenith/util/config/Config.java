@@ -32,6 +32,7 @@ public final class Config {
     public final Discord discord = new Discord();
     public final Database database = new Database();
     public final AutoUpdater autoUpdater = new AutoUpdater();
+    public boolean deprecationWarning_1_21_11 = true;
 
     public static final class Authentication {
         public AccountType accountType = AccountType.DEVICE_CODE;
@@ -81,6 +82,7 @@ public final class Config {
         public final Inventory inventory = new Inventory();
         public final ChatSchemas chatSchemas = new ChatSchemas();
         public final KeepAliveHandling keepAliveHandling = new KeepAliveHandling();
+        public double tickRate = 1.0;
 
         public static final class KeepAliveHandling {
             public KeepAliveMode keepAliveMode = KeepAliveMode.PASSTHROUGH;
@@ -693,6 +695,8 @@ public final class Config {
         public boolean botPitchPrecisionClamping = true;
         public boolean botRotateBeforeInteract = true;
         public boolean inventoryRequestServerSyncOnAction = false;
+        public boolean chainBreakSpeed2b2tFix = true;
+        public boolean entityPushing = true;
 
         public static final class PacketLog {
             public boolean enabled = false;
